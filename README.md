@@ -1,9 +1,9 @@
 # 🧭 Calculadoras para Navegación  - Flujo de trabajo
 
 
-Este repositorio utiliza **Git Flow** como modelo de ramificación para organizar el desarrollo. A continuación se describe detalladamente cómo trabajar correctamente con cada tipo de rama (`feature`, `release`, `hotfix`) en este proyecto.
+Este repositorio utiliza **Git Flow** como modelo de ramificación para organizar el trabajo de desarrollo. A continuación se describe detalladamente cómo trabajar correctamente con cada tipo de rama (`feature`, `release`, `hotfix`) en este proyecto.
 
-> ✅ **Nota importante:** En este proyecto la rama de desarrollo principal se llama `almanaque` (en lugar de `develop`).
+> ✅ **Nota importante:** En el proyecto Calculadoras la rama de desarrollo se llama `almanaque` (en lugar de `develop`).
 
 ---
 
@@ -92,12 +92,12 @@ git push --tags
 - Siempre asegúrate de estar en la rama correcta antes de crear una nueva rama con Git Flow.
 - Usa nombres descriptivos para features y hotfixes.
 - Realiza `push` después de cada `finish` ya que Git Flow no lo hace automáticamente.
-- Si necesitas colaborar con otros, realiza `pull` frecuentemente en `almanaque`.
+- Si necesitas colaborar con otros, realiza `pull` frecuentemente en la rama de trabajo`.
 
 ---
 
 ## 📌 Glosario
-- **`almanaque`**: Rama principal de desarrollo (equivalente a `develop`).
+- **`develop`**: Rama principal de desarrollo (en Calculadoras se llama `almanaque`).
 - **`main`**: Rama estable usada para producción.
 - **`feature/`**: Ramas de desarrollo de nuevas funcionalidades.
 - **`release/`**: Ramas para preparación de lanzamientos.
