@@ -36,6 +36,9 @@ goto MENU
 
 :FEATURE_START
 set /p featname=Nombre de la nueva FEATURE:
+for /f %%i in ('git config --get gitflow.branch.develop') do set develop_branch=%%i
+git checkout %develop_branch%
+git pull origin %develop_branch%
 git flow feature start %featname%
 echo Feature '%featname%' creada y checkout realizado.
 pause
@@ -53,6 +56,9 @@ goto MENU
 
 :RELEASE_START
 set /p RELEASE_NAME=Nombre de la nueva RELEASE:
+for /f %%i in ('git config --get gitflow.branch.develop') do set develop_branch=%%i
+git checkout %develop_branch%
+git pull origin %develop_branch%
 git flow release start %RELEASE_NAME%
 echo Release '%RELEASE_NAME%' creada y checkout realizado.
 pause
@@ -71,6 +77,9 @@ goto MENU
 
 :HOTFIX_START
 set /p hotfixname=Nombre del nuevo HOTFIX:
+for /f %%i in ('git config --get gitflow.branch.master') do set master_branch=%%i
+git checkout %master_branch%
+git pull origin %master_branch%
 git flow hotfix start %hotfixname%
 echo Hotfix '%hotfixname%' creado y checkout realizado.
 pause
