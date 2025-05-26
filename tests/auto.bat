@@ -15,8 +15,8 @@ echo 4. Finalizar RELEASE
 echo 5. Crear nuevo HOTFIX
 echo 6. Finalizar HOTFIX
 echo 7. Commit + Push
-echo 8. Sincronizar rama actual (git pull)
-echo A. Actualizar develop y features
+echo 8. Subir a remoto rama actual (git pull)
+echo A. Sincronizar develop y features
 echo 9. Cambiar de rama (git checkout)
 echo.
 
@@ -107,7 +107,7 @@ goto MENU
 :SYNC_CURRENT
 echo Sincronizando la rama actual '%current_branch%' con su remoto...
 git pull origin %current_branch%
-echo Sincronización completada.
+echo Sincronizacion completada.
 pause
 goto MENU
 
