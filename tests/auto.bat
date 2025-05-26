@@ -2,6 +2,7 @@
 :MENU
 cls
 for /f "delims=" %%i in ('git rev-parse --abbrev-ref HEAD') do set current_branch=%%i
+for /f %%i in ('git config --get gitflow.branch.develop') do set develop_branch=%%i
 echo ========================================
 echo  Estas actualmente en la rama: %current_branch%
 echo ========================================
@@ -36,7 +37,6 @@ goto MENU
 
 :FEATURE_START
 set /p featname=Nombre de la nueva FEATURE:
-for /f %%i in ('git config --get gitflow.branch.develop') do set develop_branch=%%i
 git checkout %develop_branch%
 git pull origin %develop_branch%
 git flow feature start %featname%
@@ -47,8 +47,7 @@ goto MENU
 :FEATURE_FINISH
 set featname=%current_branch%
 if /I "%featname:~0,8%"=="feature/" set featname=%featname:~8%
-git flow feature finish %featname%
-for /f %%i in ('git config --get gitflow.branch.develop') do set develop_branch=%%i
+git flow feature finish -m "Feature %featname%"  %featname%
 git push origin %develop_branch%
 echo Feature '%featname%' finalizada.
 pause
@@ -56,7 +55,6 @@ goto MENU
 
 :RELEASE_START
 set /p RELEASE_NAME=Nombre de la nueva RELEASE:
-for /f %%i in ('git config --get gitflow.branch.develop') do set develop_branch=%%i
 git checkout %develop_branch%
 git pull origin %develop_branch%
 git flow release start %RELEASE_NAME%
@@ -69,7 +67,7 @@ set relname=%current_branch%
 if /I "%relname:~0,8%"=="release/" set relname=%relname:~8%
 git flow release finish -m "Release %relname%" %relname%
 git push origin main
-git push origin develop
+git push origin %develop_branch%
 git push --tags
 echo Release '%relname%' finalizada y subida al remoto.
 pause
@@ -77,9 +75,8 @@ goto MENU
 
 :HOTFIX_START
 set /p hotfixname=Nombre del nuevo HOTFIX:
-for /f %%i in ('git config --get gitflow.branch.master') do set master_branch=%%i
-git checkout %master_branch%
-git pull origin %master_branch%
+git checkout main
+git pull origin main
 git flow hotfix start %hotfixname%
 echo Hotfix '%hotfixname%' creado y checkout realizado.
 pause
@@ -88,9 +85,9 @@ goto MENU
 :HOTFIX_FINISH
 set hotfixname=%current_branch%
 if /I "%hotfixname:~0,7%"=="hotfix/" set hotfixname=%hotfixname:~7%
-git flow hotfix finish %hotfixname%
+git flow hotfix finish -m "Hotfix %hotfixname%" %hotfixname%
 git push origin main
-git push origin develop
+git push origin %develop_branch%
 git push origin --tags
 echo Hotfix '%hotfixname%' finalizado y subido al remoto..
 pause
