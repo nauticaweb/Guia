@@ -16,6 +16,7 @@ echo 5. Crear nuevo HOTFIX
 echo 6. Finalizar HOTFIX
 echo 7. Commit + Push
 echo 8. Sincronizar rama actual (git pull)
+echo A. Actualizar develop y features
 echo 9. Cambiar de rama (git checkout)
 echo.
 
@@ -30,6 +31,7 @@ if "%option%"=="5" goto HOTFIX_START
 if "%option%"=="6" goto HOTFIX_FINISH
 if "%option%"=="7" goto COMMIT_PUSH
 if "%option%"=="8" goto SYNC_CURRENT
+if /I "%option%"=="A" goto UPDATE_ALL
 if "%option%"=="9" goto CHANGE_BRANCH
 echo Opcion no valida. Presiona una tecla para intentar de nuevo...
 pause >nul
@@ -47,7 +49,7 @@ goto MENU
 :FEATURE_FINISH
 set featname=%current_branch%
 if /I "%featname:~0,8%"=="feature/" set featname=%featname:~8%
-git flow feature finish -m "Feature %featname%"  %featname%
+git flow feature finish -m "Feature %featname%" %featname%
 git push origin %develop_branch%
 echo Feature '%featname%' finalizada.
 pause
@@ -108,6 +110,34 @@ git pull origin %current_branch%
 echo Sincronización completada.
 pause
 goto MENU
+
+:UPDATE_ALL
+echo === Actualizando main desde remoto ===
+git checkout main
+git pull origin main
+echo === Merging main en develop ===
+git checkout %develop_branch%
+git merge main --no-edit
+git push origin %develop_branch%
+
+echo === Actualizando las ramas locales ===
+for /f "delims=" %%b in ('git branch --list "feature/*"') do call :MERGE_FEATURE "%%b"
+
+:AFTER_MERGES
+echo ----
+echo Todas las ramas feature han sido actualizadas con develop.
+pause
+goto MENU
+
+:MERGE_FEATURE
+set branch=%~1
+set branch=%branch:~2%
+echo ----
+echo Cambiando a %branch%
+git checkout %branch%
+git merge %develop_branch% --no-edit
+git push origin %branch%
+goto :eof
 
 :CHANGE_BRANCH
 set /p branchname=Nombre de la rama a cambiar:
