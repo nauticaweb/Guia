@@ -89,7 +89,7 @@ git flow hotfix finish -m "Hotfix %hotfixname%" %hotfixname%
 git push origin main
 git push origin %develop_branch%
 git push origin --tags
-echo Hotfix '%hotfixname%' finalizado y subido al remoto..
+echo Hotfix '%hotfixname%' finalizado y subido al remoto.
 pause
 goto MENU
 
