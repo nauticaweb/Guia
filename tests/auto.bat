@@ -15,8 +15,8 @@ echo 4. Finalizar RELEASE
 echo 5. Crear nuevo HOTFIX
 echo 6. Finalizar HOTFIX
 echo 7. Commit + Push
-echo 8. Subir a remoto rama actual (git pull)
-echo A. Sincronizar develop y features
+echo 8. Descargar de remoto la rama actual (git pull)
+echo A. Descargar de remoto todas las ramas y Sincronizar con MAIN
 echo 9. Cambiar de rama (git checkout)
 echo.
 
@@ -115,12 +115,16 @@ goto MENU
 echo === Actualizando main desde remoto ===
 git checkout main
 git pull origin main
-echo === Merging main en develop ===
+
+echo === Actualizando develop desde remoto ===
 git checkout %develop_branch%
+git pull origin %develop_branch%
+
+echo === Merging main en develop ===
 git merge main --no-edit
 git push origin %develop_branch%
 
-echo === Actualizando las ramas locales ===
+echo === Actualizando las ramas feature locales ===
 for /f "delims=" %%b in ('git branch --list "feature/*"') do call :MERGE_FEATURE "%%b"
 
 :AFTER_MERGES
@@ -133,8 +137,11 @@ goto MENU
 set branch=%~1
 set branch=%branch:~2%
 echo ----
-echo Cambiando a %branch%
+echo Actualizando la rama %branch% desde remoto
+git fetch origin %branch%
 git checkout %branch%
+git reset --hard origin/%branch%
+echo Haciendo merge de %develop_branch% en %branch%
 git merge %develop_branch% --no-edit
 git push origin %branch%
 goto :eof
